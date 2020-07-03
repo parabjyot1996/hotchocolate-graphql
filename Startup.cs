@@ -88,7 +88,7 @@ namespace HotChocolateGraphQL
                     .AddSubscriptionType(d => d.Name("Subscription"))
                     .AddType<AccountSubscriptions>()
                     .Create(),
-                    new QueryExecutionOptions { ForceSerialExecution = true });                    
+                    new QueryExecutionOptions { ForceSerialExecution = true });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

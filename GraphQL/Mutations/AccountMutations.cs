@@ -42,7 +42,7 @@ namespace HotChocolateGraphQL.GraphQL.Mutations
                         .Build());
             }
 
-            await eventSender.SendAsync("Created", result, cancellationToken);
+            await eventSender.SendAsync("Created", result.ModelData, cancellationToken);
             return result.ModelData;
         }
 
