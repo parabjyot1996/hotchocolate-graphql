@@ -1,0 +1,105 @@
+GraphQL Queries
+
+-----------------------Select Query-------------------
+query ownersQuery {
+  owners {
+    nodes{
+      id
+      name
+      address
+    }
+  }
+}
+
+----------------------Create Mutation------------------
+mutation($owner: OwnerInput!) {
+  createOwner(owner: $owner) {
+    id
+    name
+    address
+  }
+}
+
+----------------------Update Mutation------------------------
+mutation($ownerId: ID!, $owner: OwnerInput!) {
+  updateOwner(ownerId: $ownerId, owner: $owner) {
+    id
+    name
+    address
+  }
+}
+
+
+-----------------------Delete Mutation----------------------
+mutation($ownerId: ID!) {
+  deleteOwner(ownerId: $ownerId)
+}
+
+-----------------------Skip Directives-----------------------
+query Owner($withAccount: Boolean!) {
+    owners {
+        id
+        name
+        accounts @skip(if: $withAccount) {
+            accountId: id
+            type
+            description
+            ownerId
+        }
+    }
+}
+
+{
+    "withAccount": true
+}
+
+--------------------Include Directives-----------------------
+query Owner($withAccount: Boolean!) {
+    owners {
+        id
+        name
+        accounts @include(if: $withAccount) {
+            accountId: id
+            type
+            description
+            ownerId
+        }
+    }
+}
+
+{
+    "withAccount": true
+}
+
+--------------------Sorting-----------------------
+query ownersQuery {
+  owners(order_by: { name: ASC }) {
+    nodes{
+      id
+      name
+      address
+    }
+  }
+}
+
+--------------------Pagination-----------------------
+query ownersQuery {
+  owners(first: 10) {
+    nodes{
+      id
+      name
+      address
+    }
+  }
+}
+
+--------------------Filtering-----------------------
+query ownersQuery {
+  owners(where: {id: 1}) {
+    nodes{
+      id
+      name
+      address
+    }
+  }
+}

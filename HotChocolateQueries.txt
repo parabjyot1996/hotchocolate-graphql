@@ -1,0 +1,117 @@
+HotChocolate Queries
+
+query {
+  owners(last: 1) {
+    nodes {
+      name
+    }
+    pageInfo {
+      hasNextPage
+      endCursor
+    }
+  }
+}
+
+----------------------------Where Clause-------------------------
+
+query {
+  accounts(where : { ownerId : 7}) {
+    nodes {
+      id
+      type
+      ownerId
+    }
+  }
+}
+
+---------------------------OrderBy Clause-------------------------
+
+query {
+  owners(order_by: { name: ASC }) {
+    edges {
+      cursor
+      node {
+        id
+        name
+      }
+    }
+    pageInfo {
+      hasNextPage
+      hasPreviousPage
+    }
+    totalCount
+  }
+}
+
+---------------------------OR Clause-------------------------
+
+query {
+  owners(where: { OR: [{name: "Parab"}, {address: "Mumbai"}] }) {
+    nodes {
+      id
+      name
+      address
+    }
+  }
+}
+
+---------------------------Create Mutation-------------------------
+
+mutation($owner: OwnerInput!) {
+  createOwner(owner: $owner) {
+    id
+    name
+  }
+}
+
+---------------------------Update Mutation-------------------------
+
+mutation($ownerId: Int!, $owner: OwnerInput) {
+  updateOwner(ownerId: $ownerId, owner: $owner) {
+    id
+    name
+    address
+  }
+}
+
+---------------------------Delete Mutation-------------------------
+
+mutation($ownerId: Int!) {
+  deleteOwner(ownerId: $ownerId)
+}
+
+---------------------------Batching Queries-------------------------
+http://localhost:5000?batchOperations=[A,B]
+
+query A {
+  owners {
+    nodes {
+      id @export(as: "ids")
+      name
+      address
+    }
+  }
+}
+
+query B($ids: [Int]) {
+  accountsByOwnerId(ownerIds: $ids) {
+    nodes {
+      id
+      type
+      ownerId
+    }
+  }
+}
+
+--------------------------Subscription----------------------------------
+
+
+
+--------------------------Postman Queries-------------------------------
+{
+    "query": "query { owners { nodes { id, name }}}"
+}
+
+{
+    "query": "query ownerQuery($id:Int!) { ownerById(ownerId: $id) {id, name}}","variables": {"id": 1}, "operationName": null
+}
